@@ -1,5 +1,5 @@
 import numpy as np
-
+from functools import cmp_to_key
 
 #ndarray 对象
 a = np.array([1, 2, 3])
@@ -89,5 +89,37 @@ a = np.array([[4, 3, 2], [2, 4, 1]])
 print(np.sort(a))
 print(np.sort(a, axis=None))
 print(np.sort(a, axis=0))
-print(np.sort(a,axis=1))
+print(np.sort(a, axis=1))
 print(np.sort(a, axis=-1, kind='quicksort', order=None))
+
+student = np.dtype({
+    'names': ['name', 'chinese', 'english', 'math'],
+    'formats': ['U32', 'i', 'i', 'f']
+})
+score = np.array([("张飞", 66, 65, 30), ("关羽", 95, 85, 98), ("赵云", 93, 92, 96), ("黄忠", 90, 88, 77), ("典韦", 80, 90, 90)], dtype=student)
+chineses = score[:]['chinese']
+maths = score[:]['math']
+englishs = score[:]['english']
+print(chineses)
+print(np.mean(chineses))
+print(np.mean(englishs))
+print(np.mean(maths))
+
+print(np.amin(chineses))
+print(np.amin(englishs))
+print(np.amin(maths))
+
+print(np.amax(chineses))
+print(np.amax(englishs))
+print(np.amax(maths))
+
+print(np.std(chineses))
+print(np.std(englishs))
+print(np.std(maths))
+
+print(np.var(chineses))
+print(np.var(englishs))
+print(np.var(maths))
+
+print(np.sort(score, axis=-1, kind='quicksort', order='chinese'))
+print(sorted(score, key=cmp_to_key(lambda x, y: (x[1]+x[2]+x[3])-(y[1]+y[2]+y[3])), reverse=False))
