@@ -16,4 +16,11 @@ df2 = DataFrame(data, index=['ZhangFei', 'GuanYu', 'ZhaoYun', 'HuangZhong', 'Dia
 print(df1)
 print(df2)
 
+df2.to_excel('data.xlsx')
+score = DataFrame(pd.read_excel('data.xlsx'))
+score.to_excel('data1.xlsx')
+print(score)
+
+
+
 
