@@ -1,5 +1,5 @@
 
-#import scikit-learn
+import sklearn
 
 # 输入输出 代码缩进在 Python 中是一种语法
 #name = input("What's youy name")
