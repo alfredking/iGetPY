@@ -116,5 +116,6 @@ def sum(df):
 
 exams = exams.dropna()
 exams = exams.apply(sum, axis=1)
+exams['Total'] = exams.sum(axis=1)
 print(exams)
 
