@@ -109,13 +109,13 @@ exams.fillna(0, inplace=True)
 print(exams)
 
 
-def sum(df):
+def sums(df):
     df['总和'] = (df[u'语文']+df[u'英语']+df[u'数学'])
     return df
 
 
 exams = exams.dropna()
-exams = exams.apply(sum, axis=1)
+exams = exams.apply(sums, axis=1)
 exams['Total'] = exams.sum(axis=1)
 print(exams)
 

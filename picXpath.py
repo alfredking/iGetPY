@@ -1,6 +1,21 @@
 import os
 from selenium import webdriver
+from lxml import etree
 import requests
+
+query = '张柏芝'
+
+def download(src, id):
+    dir = './' + str(id) + '.jpg'
+    try:
+        pic = requests.get(src, timeout = 10)
+        fp = open(dir, 'wb')
+        fp.write(pic.content)
+        fp.close()
+    except requests.exceptions.ConnectionError:
+        print('图片无法下载')
+
+
 '''
 for root, dirs, files in os.walk('./'):
     for name in files:
@@ -9,14 +24,17 @@ for root, dirs, files in os.walk('./'):
             print(name)
             os.remove(os.path.join(root, name))
 '''
+'''
 driver = webdriver.chrome
 driver.get(request_url)
 
 srcs = html.xpath
+'''
 
-def getMovieImages():
-    url = 'https://movie.douban.com/subject_search?search_text='+ query +'&cat=1002'
-    driver = webdriver.Chrome('/Users/yong/Desktop/Python/xpath/libs/chromedriver')
+
+def get_movie_images():
+    url = 'https://movie.douban.com/subject_search?search_text='+query+'&cat=1002'
+    driver = webdriver.Chrome('/Users/cmcc/PycharmProjects/iGet/chromedriver')
     driver.get(url)
     html = etree.HTML(driver.page_source)
     # 使用xpath helper, ctrl+shit+x 选中元素，如果要匹配全部，则需要修改query 表达式
@@ -31,4 +49,5 @@ def getMovieImages():
 
     driver.close()
 
-getMovieImages()
+get_movie_images()
+
