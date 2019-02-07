@@ -5,6 +5,7 @@ import requests
 
 query = '张柏芝'
 
+
 def download(src, id):
     dir = './' + str(id) + '.jpg'
     try:
@@ -16,20 +17,14 @@ def download(src, id):
         print('图片无法下载')
 
 
-'''
 for root, dirs, files in os.walk('./'):
     for name in files:
         print(name)
         if name.endswith(".jpg"):
             print(name)
             os.remove(os.path.join(root, name))
-'''
-'''
-driver = webdriver.chrome
-driver.get(request_url)
 
-srcs = html.xpath
-'''
+
 
 
 def get_movie_images():
