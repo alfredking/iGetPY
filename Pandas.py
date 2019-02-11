@@ -119,3 +119,4 @@ exams = exams.apply(sums, axis=1)
 exams['Total'] = exams.sum(axis=1)
 print(exams)
 
+
