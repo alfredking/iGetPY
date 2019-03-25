@@ -37,7 +37,10 @@ test_features = test_data[features]
 
 
 dvec = DictVectorizer(sparse=False)
+print("show train_features dvec.fit_transform")
+print(train_features)
 train_features = dvec.fit_transform(train_features.to_dict(orient='record'))
+print(train_features)
 print(dvec.feature_names_)
 
 # 构造 ID3 决策树
@@ -45,7 +48,12 @@ clf = DecisionTreeClassifier(criterion='entropy')
 # 决策树训练
 clf.fit(train_features, train_labels)
 
-test_features=dvec.transform(test_features.to_dict(orient='record'))
+# fit_transform()干了两件事：fit找到数据转换规则，并将数据标准化
+# transform()可以直接把转换规则拿来用，所以并不需要fit_transform()，否则，两次标准化后的数据格式就不一样了
+print("show test_features vdvec.transform")
+print(test_features)
+test_features = dvec.transform(test_features.to_dict(orient='record'))
+print(test_features)
 # 决策树预测
 pred_labels = clf.predict(test_features)
 
