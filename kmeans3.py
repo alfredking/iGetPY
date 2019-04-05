@@ -5,6 +5,8 @@ import PIL.Image as image
 from sklearn.cluster import KMeans
 from sklearn import preprocessing
 import matplotlib.image as mpimg
+
+
 # 加载图像，并对数据进行规范化
 def load_data(filePath):
     # 读文件
@@ -21,11 +23,16 @@ def load_data(filePath):
             data.append([(c1+1)/256.0, (c2+1)/256.0, (c3+1)/256.0])
     f.close()
     return np.mat(data), width, height
+
+
 # 加载图像，得到规范化的结果imgData，以及图像尺寸
-img, width, height = load_data('./weixin.jpg')
+# img, width, height = load_data('./weixin.jpg')
+img, width, height = load_data('./baby.jpg')
 # 用K-Means对图像进行16聚类
-kmeans =KMeans(n_clusters=16)
+kmeans = KMeans(n_clusters=16)
 label = kmeans.fit_predict(img)
+print('fit_predict result')
+print(label)
 # 将图像聚类结果，转化成图像尺寸的矩阵
 label = label.reshape([width, height])
 # 创建个新图像img，用来保存图像聚类压缩后的结果
@@ -36,4 +43,5 @@ for x in range(width):
         c2 = kmeans.cluster_centers_[label[x, y], 1]
         c3 = kmeans.cluster_centers_[label[x, y], 2]
         img.putpixel((x, y), (int(c1*256)-1, int(c2*256)-1, int(c3*256)-1))
-img.save('weixin_new.jpg')
+# img.save('weixin_new.jpg')
+img.save('baby_new.jpg')
