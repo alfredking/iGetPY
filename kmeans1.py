@@ -9,7 +9,7 @@ from sklearn import preprocessing
 # 加载图像，并对数据进行规范化
 def load_data(filePath):
     # 读文件
-    f = open(filePath,'rb')
+    f = open(filePath, 'rb')
     data = []
     # 得到图像的像素值
     img = image.open(f)
@@ -24,11 +24,16 @@ def load_data(filePath):
     # 采用Min-Max规范化
     mm = preprocessing.MinMaxScaler()
     data = mm.fit_transform(data)
+    print('load data before return')
+    print(data)
     return np.mat(data), width, height
 
 
 # 加载图像，得到规范化的结果img，以及图像尺寸
 img, width, height = load_data('./weixin.jpg')
+print('load data after return')
+print(img)
+
 
 # 用K-Means对图像进行2聚类
 kmeans = KMeans(n_clusters=2)
