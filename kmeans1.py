@@ -5,6 +5,7 @@ import PIL.Image as image
 from sklearn.cluster import KMeans
 from sklearn import preprocessing
 
+
 # 加载图像，并对数据进行规范化
 def load_data(filePath):
     # 读文件
@@ -25,11 +26,12 @@ def load_data(filePath):
     data = mm.fit_transform(data)
     return np.mat(data), width, height
 
+
 # 加载图像，得到规范化的结果img，以及图像尺寸
 img, width, height = load_data('./weixin.jpg')
 
 # 用K-Means对图像进行2聚类
-kmeans =KMeans(n_clusters=2)
+kmeans = KMeans(n_clusters=2)
 kmeans.fit(img)
 label = kmeans.predict(img)
 # 将图像聚类结果，转化成图像尺寸的矩阵
