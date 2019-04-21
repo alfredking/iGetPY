@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
 # 数据加载
 train_data = pd.read_csv('./Titanic_Data/train.csv')
 test_data = pd.read_csv('./Titanic_Data/test.csv')
@@ -56,6 +57,14 @@ test_features = dvec.transform(test_features.to_dict(orient='record'))
 print(test_features)
 # 决策树预测
 pred_labels = clf.predict(test_features)
+
+
+# AdaBoost 分类器
+dt_stump = DecisionTreeClassifier(max_depth=1, min_samples_leaf=1)
+ada = AdaBoostClassifier(base_estimator=dt_stump, n_estimators=200)
+ada.fit(train_features, train_labels)
+# AdaBoost 分类器准确率更高
+print(u'AdaBoost 分类器准确率为 %.4lf' % np.mean(cross_val_score(ada, train_features, train_labels, cv=10)))
 
 # 得到决策树准确率
 acc_decision_tree = round(clf.score(train_features, train_labels), 6)
