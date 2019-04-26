@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 import requests
 import re
 import time
@@ -6,31 +6,39 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import jieba
 from lxml import etree
+
+
 # 生成词云
 def create_word_cloud(f):
-     print('根据词频计算词云')
-     text = " ".join(jieba.cut(f,cut_all=False, HMM=True))
-     wc = WordCloud(
+    print('根据词频计算词云')
+    text = " ".join(jieba.cut(f, cut_all=False, HMM=True))   # cut_all是分词的模式，默认是false是精准模式；HMM就是隐马尔
+    # 可夫链，这个是在分词的理论模型中用到的，默认是开启的
+    # jieba分词的模式分为三种：
+    #
+    # 精确模式，试图将句子最精确地切开，适合文本分析；
+    # 全模式，把句子中所有的可以成词的词语都扫描出来, 速度非常快，但是不能解决歧义；
+    # 搜索引擎模式，在精确模式的基础上，对长词再次切分，提高召回率，适合用于搜索引擎分词。
+    wc = WordCloud(
            font_path="./SimHei.ttf",
            max_words=100,
            width=2000,
            height=1200,
     )
-     wordcloud = wc.generate(text)
-     # 写词云图片
-     wordcloud.to_file("wordcloud.jpg")
-     # 显示词云文件
-     plt.imshow(wordcloud)
-     plt.axis("off")
-     plt.show()
+    wordcloud = wc.generate(text)
+    # 写词云图片
+    wordcloud.to_file("wordcloud.jpg")
+    # 显示词云文件
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
 
 
 # 去掉停用词
 def remove_stop_words(f):
-     stop_words = ['学会', '就是', '什么']
-     for stop_word in stop_words:
-           f = f.replace(stop_word, '')
-     return f
+    stop_words = ['学会', '就是', '什么']
+    for stop_word in stop_words:
+        f = f.replace(stop_word, '')
+    return f
 
 
 f = '数据分析全景图及修炼指南\
@@ -50,9 +58,7 @@ Python 爬虫：如何自动化下载王祖贤海报？\
 一次学会 Python 数据可视化的 10 种技能'
 
 f = remove_stop_words(f)
-
 create_word_cloud(f)
-
 
 
 headers = {
