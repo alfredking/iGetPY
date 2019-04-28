@@ -1,37 +1,27 @@
-# -*- coding: utf-8 -*-
-# 使用 RandomForest 对 IRIS 数据集进行分类
-# 利用 GridSearchCV 寻找最优参数
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.datasets import load_iris
-
-#rf = RandomForestClassifier()
-#parameters = {"n_estimators": range(1, 10)}
-iris = load_iris()
-
-'''
-# 使用 GridSearchCV 进行参数调优
-clf = GridSearchCV(estimator=rf, param_grid=parameters)
-# 对 iris 数据集进行分类
-clf.fit(iris.data, iris.target)
-print(" 最优分数： %.4lf" %clf.best_score_)
-print(" 最优参数：", clf.best_params_)
-
-from sklearn.model_selection import GridSearchCV
-pipeline = Pipeline([
-        ('scaler', StandardScaler()),
-        ('pca', PCA()),
-        ('randomforestclassifier', RandomForestClassifier())
-])
 
 # -*- coding: utf-8 -*-
 # 使用 RandomForest 对 IRIS 数据集进行分类
 # 利用 GridSearchCV 寻找最优参数, 使用 Pipeline 进行流水作业
+
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+# 信用卡违约率分析
+import pandas as pd
+from sklearn.model_selection import learning_curve, train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from matplotlib import pyplot as plt
+import seaborn as sns
+from sklearn.ensemble import AdaBoostClassifier
+
+'''
 rf = RandomForestClassifier()
 parameters = {"randomforestclassifier__n_estimators": range(1,11)}
 iris = load_iris()
@@ -45,23 +35,10 @@ clf = GridSearchCV(estimator=pipeline, param_grid=parameters)
 clf.fit(iris.data, iris.target)
 print(" 最优分数： %.4lf" %clf.best_score_)
 print(" 最优参数：", clf.best_params_)
-运行结果：
-最优分数： 0.9667
-最优参数： {'randomforestclassifier__n_estimators': 9}
 
-# -*- coding: utf-8 -*-
-# 信用卡违约率分析
-import pandas as pd
-from sklearn.model_selection import learning_curve, train_test_split, GridSearchCV
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.metrics import accuracy_score
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from matplotlib import pyplot as plt
-import seaborn as sns
+# 训练集和测试集的数据不一样，所以每次的结果都不一样
+
+'''
 
 # 数据加载
 data = data = pd.read_csv('./UCI_Credit_Card.csv')
@@ -94,6 +71,7 @@ classifiers = [
     DecisionTreeClassifier(random_state=1, criterion='gini'),
     RandomForestClassifier(random_state=1, criterion='gini'),
     KNeighborsClassifier(metric='minkowski'),
+    AdaBoostClassifier(),
 ]
 # 分类器名称
 classifier_names = [
@@ -101,6 +79,7 @@ classifier_names = [
     'decisiontreeclassifier',
     'randomforestclassifier',
     'kneighborsclassifier',
+    'adaboostclassifier'
 ]
 # 分类器参数
 classifier_param_grid = [
@@ -108,6 +87,7 @@ classifier_param_grid = [
     {'decisiontreeclassifier__max_depth': [6, 9, 11]},
     {'randomforestclassifier__n_estimators': [3, 5, 6]},
     {'kneighborsclassifier__n_neighbors': [4, 6, 8]},
+    {'adaboostclassifier__n_estimators': [10, 50, 100]},
 ]
 
 
@@ -120,12 +100,11 @@ def GridSearchCV_work(pipeline, train_x, train_y, test_x, test_y, param_grid, sc
     print("GridSearch 最优参数：", search.best_params_)
     print("GridSearch 最优分数： %0.4lf" % search.best_score_)
     predict_y = gridsearch.predict(test_x)
+    print(" 准确率 %0.4lf" % accuracy_score(test_y, predict_y))
+    response['predict_y'] = predict_y
+    response['accuracy_score'] = accuracy_score(test_y, predict_y)
+    return response
 
-
-print(" 准确率 %0.4lf" % accuracy_score(test_y, predict_y))
-response['predict_y'] = predict_y
-response['accuracy_score'] = accuracy_score(test_y, predict_y)
-return response
 
 for model, model_name, model_param_grid in zip(classifiers, classifier_names, classifier_param_grid):
     pipeline = Pipeline([
@@ -134,4 +113,4 @@ for model, model_name, model_param_grid in zip(classifiers, classifier_names, cl
     ])
     result = GridSearchCV_work(pipeline, train_x, train_y, test_x, test_y, model_param_grid, score='accuracy')
 
-'''
+
